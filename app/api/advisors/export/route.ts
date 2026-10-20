@@ -1,0 +1,2 @@
+import {advisors} from "@/lib/demo-data";
+export async function GET(){const head="first_name,last_name,display_name,firm,professional_title,city,state,zip_code,years_experience,status";const lines=advisors.map(a=>[a.first_name,a.last_name,a.display_name,a.firm?.name,a.professional_title,a.city,a.state,a.zip_code,a.years_experience,a.status].map(v=>`"${String(v||"").replaceAll('"','""')}"`).join(","));return new Response([head,...lines].join("\n"),{headers:{"Content-Type":"text/csv","Content-Disposition":"attachment; filename=findanadvisor-advisors.csv"}})}
