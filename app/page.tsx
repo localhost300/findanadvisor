@@ -8,18 +8,40 @@ import {
 import { SiteShell } from "@/components/layout/site-shell";
 import { HeroSearch } from "@/components/search/hero-search";
 import { specialties, slugify } from "@/lib/demo-data";
+import { siteUrl } from "@/lib/site-url";
 
 export default function Home() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Findanadvisor",
+    url: siteUrl.toString(),
+    description:
+      "Explore public financial professional records and practical guides for making informed decisions.",
+    publisher: {
+      "@type": "Organization",
+      name: "Findanadvisor",
+      url: siteUrl.toString(),
+    },
+  };
+
   return (
     <SiteShell>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
+      />
       <section className="home-hero">
         <div className="container home-hero-grid">
           <div className="home-hero-copy">
             <span className="home-eyebrow">A clear place to start</span>
             <h1>Make your financial search a little simpler.</h1>
             <p>
-              Explore planning topics and search by location or specialty.
-              Advisor profiles will be added when they’re ready.
+              Browse public financial professional records by name or location,
+              review their source information, and read practical guides before
+              deciding whom to contact.
             </p>
             <div className="home-hero-actions">
               <Link href="/specialties" className="btn home-primary-button">

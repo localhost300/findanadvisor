@@ -9,6 +9,7 @@ import {
   brokerCheckUrl,
 } from "@/lib/brokercheck-data";
 import { getBrokerContactRecipient } from "@/lib/broker-contact";
+import { siteUrl } from "@/lib/site-url";
 
 export async function generateMetadata({
   params,
@@ -17,11 +18,52 @@ export async function generateMetadata({
 }) {
   const { crd } = await params;
   const record = brokerCheckRecords.find((item) => item.crd === crd);
+  if (!record) {
+    return {
+      title: "Broker not found",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const location =
+    record.city && record.state ? `${record.city}, ${record.state}` : null;
+  const registration =
+    record.registrations.length > 0
+      ? record.registrations.join(" and ")
+      : "professional";
+  const description = [
+    `${record.name} (FINRA CRD ${record.crd})`,
+    `public ${registration} record`,
+    record.firm ? `listed with ${record.firm}` : null,
+    location ? `in ${location}` : null,
+    `sourced from FINRA BrokerCheck and retrieved ${brokerCheckRetrievedAt}.`,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const tinaRecord = record.crd === "5889228";
+  const metadataDescription = tinaRecord
+    ? "Tina Renee Graves (FINRA CRD 5889228) is a broker at MWA Financial Services Inc. in Lexington, TN. See her public FINRA BrokerCheck record."
+    : description;
+  const canonical = `/brokers/${record.crd}`;
+
   return {
-    title: record ? `${record.name} — Broker profile` : "Broker not found",
-    description: record
-      ? `Public registration summary for ${record.name}, sourced from FINRA BrokerCheck.`
-      : undefined,
+    title: `${record.name} | FINRA BrokerCheck Record`,
+    description: metadataDescription,
+    alternates: tinaRecord ? { canonical } : undefined,
+    robots: { index: tinaRecord, follow: true },
+    openGraph: {
+      type: "profile",
+      url: new URL(canonical, siteUrl).toString(),
+      title: `${record.name} | FINRA BrokerCheck Record`,
+      description: metadataDescription,
+      siteName: "Findanadvisor",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary",
+      title: `${record.name} | FINRA BrokerCheck Record`,
+      description: metadataDescription,
+    },
   };
 }
 
@@ -43,10 +85,46 @@ export default async function BrokerProfilePage({
       process.env.SMTP_PASSWORD &&
       process.env.SMTP_PORT,
   );
+  const profileUrl = new URL(`/brokers/${record.crd}`, siteUrl).toString();
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: record.name,
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "FINRA CRD",
+      value: record.crd,
+    },
+    url: profileUrl,
+    mainEntityOfPage: profileUrl,
+    sameAs: brokerCheckUrl(record.crd),
+    description: `Public ${record.registrations.join(" and ") || "professional"} registration summary sourced from FINRA BrokerCheck. Record retrieved ${brokerCheckRetrievedAt}.`,
+    ...(record.registrations.length > 0 && {
+      jobTitle: record.registrations.join(", "),
+    }),
+    ...(record.firm && {
+      worksFor: { "@type": "Organization", name: record.firm },
+    }),
+    ...(record.city &&
+      record.state && {
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: record.city,
+          addressRegion: record.state,
+          addressCountry: "US",
+        },
+      }),
+  };
 
   return (
     <SiteShell>
       <main className="broker-profile-page">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
         <section className="broker-profile-hero">
           <div className="container">
             <Link className="broker-profile-back" href="/advisors">

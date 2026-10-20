@@ -1,2 +1,50 @@
-import type {MetadataRoute} from "next";import {advisors,specialties,slugify,stateNames} from "@/lib/demo-data";
-export default function sitemap():MetadataRoute.Sitemap{const base=process.env.NEXT_PUBLIC_SITE_URL||"http://localhost:3000";const paths=["","/advisors","/specialties","/locations","/guides","/advisor-match","/certifications","/privacy","/terms","/disclaimer"];return [...paths.map(p=>({url:`${base}${p}`,lastModified:new Date(),changeFrequency:"weekly" as const})),...advisors.map(a=>({url:`${base}/advisor/${a.slug}`,lastModified:new Date(a.created_at),changeFrequency:"weekly" as const})),...specialties.map(([s])=>({url:`${base}/specialty/${slugify(s)}`,lastModified:new Date(),changeFrequency:"monthly" as const})),...Object.keys(stateNames).map(s=>({url:`${base}/financial-advisors/${s}`,lastModified:new Date(),changeFrequency:"weekly" as const}))]}
+import type { MetadataRoute } from "next";
+import { financialGuides } from "@/lib/guides";
+import {
+  brokerCheckRecords,
+  brokerCheckRetrievedAt,
+} from "@/lib/brokercheck-data";
+import { specialties, slugify } from "@/lib/demo-data";
+import { siteUrl } from "@/lib/site-url";
+
+const tinaCrd = "5889228";
+const publicPages = [
+  "",
+  "/advisors",
+  "/specialties",
+  "/locations",
+  "/guides",
+  "/advisor-match",
+  "/advisor-verification",
+  "/certifications",
+  "/for-advisors",
+  "/privacy",
+  "/terms",
+  "/disclaimer",
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const tina = brokerCheckRecords.find((record) => record.crd === tinaCrd);
+
+  return [
+    ...publicPages.map((path) => ({
+      url: new URL(path, siteUrl).toString(),
+    })),
+    ...financialGuides.map((guide) => ({
+      url: new URL(`/guides/${guide.slug}`, siteUrl).toString(),
+    })),
+    ...specialties.map(([specialty]) => ({
+      url: new URL(`/specialty/${slugify(specialty)}`, siteUrl).toString(),
+    })),
+    ...(tina
+      ? [
+          {
+            url: new URL(`/brokers/${tina.crd}`, siteUrl).toString(),
+            lastModified: new Date(
+              `${brokerCheckRetrievedAt}T00:00:00.000Z`,
+            ),
+          },
+        ]
+      : []),
+  ];
+}

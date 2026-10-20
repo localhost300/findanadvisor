@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { siteUrl } from "@/lib/site-url";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -9,21 +10,29 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-  ),
+  metadataBase: siteUrl,
+  applicationName: "Findanadvisor",
   title: {
-    default: "Findanadvisor | Find the right financial advisor",
+    default: "Findanadvisor | Financial Advisor Records & Guides",
     template: "%s | Findanadvisor",
   },
   description:
-    "Search financial advisors by specialty and location, and find guidance that fits your needs.",
+    "Explore financial professional records sourced from FINRA BrokerCheck, browse by location, and use practical guides to make informed decisions.",
   openGraph: {
-    title: "Findanadvisor",
-    description: "Find the right financial advisor for you.",
+    title: "Findanadvisor | Financial Advisor Records & Guides",
+    description:
+      "Explore financial professional records sourced from FINRA BrokerCheck and practical guides for making informed decisions.",
     type: "website",
+    siteName: "Findanadvisor",
+    url: siteUrl,
+    locale: "en_US",
   },
-  twitter: { card: "summary", title: "Findanadvisor" },
+  twitter: {
+    card: "summary",
+    title: "Findanadvisor | Financial Advisor Records & Guides",
+    description:
+      "Explore public financial professional records and practical guides from Findanadvisor.",
+  },
   icons: { icon: "/favicon.svg" },
 };
 export default function RootLayout({
