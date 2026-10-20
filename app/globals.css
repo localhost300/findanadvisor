@@ -369,3 +369,330 @@ h1,h2,h3{font-family:var(--font-geist-sans),ui-sans-serif,system-ui,-apple-syste
 .verification-page{padding-bottom:66px;background:#f7f8f5}.verification-hero{padding:58px 0 52px;background:var(--navy);color:white}.verification-hero-inner{max-width:920px}.verification-hero .eyebrow{color:#a7d3bd}.verification-hero h1{max-width:820px;margin:10px 0 15px;font-size:clamp(2.1rem,5vw,3.45rem);line-height:1.08;font-weight:600}.verification-hero p{max-width:720px;margin:0 0 22px;color:#d1dde3;font-size:1rem;line-height:1.7}.verification-hero .btn{font-size:.84rem}.verification-content{padding-top:28px}.verification-intro{display:flex;align-items:flex-start;gap:14px;padding:19px 21px;border-color:#d6e7dc;background:#f0f7f2;box-shadow:none}.verification-intro-icon{display:grid;flex:0 0 38px;width:38px;height:38px;place-items:center;border-radius:9px;background:white;color:var(--green)}.verification-intro h2{margin:0 0 5px;color:#244d39;font-size:1.05rem;font-weight:600}.verification-intro p{margin:0;color:#52675a;font-size:.83rem;line-height:1.65}.verification-section-heading{max-width:700px;margin:38px 0 20px}.verification-section-heading h2,.verification-report-copy h2{margin:6px 0;color:var(--navy);font-size:1.75rem;font-weight:600;line-height:1.2}.verification-section-heading p,.verification-report-copy p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.65}.verification-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.verification-step{position:relative;min-height:195px;padding:19px}.verification-step-number{position:absolute;top:17px;right:17px;color:#a2b2a8;font-size:.72rem;font-weight:700;letter-spacing:.06em}.verification-step-icon{display:grid;width:38px;height:38px;place-items:center;border-radius:9px;background:#edf5f1;color:var(--green)}.verification-step h3{margin:14px 0 6px;color:var(--navy);font-size:.98rem;font-weight:600;letter-spacing:-.015em}.verification-step p{margin:0;color:#617068;font-size:.79rem;line-height:1.62}.verification-report-section{display:grid;grid-template-columns:minmax(0,.8fr) minmax(350px,1fr);gap:28px;align-items:start;margin-top:52px;padding-top:35px;border-top:1px solid var(--line)}.verification-report-copy{padding-top:8px}.verification-report-copy h2{font-size:1.9rem}.verification-report-copy p{margin:9px 0 15px}.verification-source-link{display:inline-flex;align-items:center;gap:7px;color:var(--green);font-size:.83rem;font-weight:650}.verification-report-card{padding:22px}.verification-report-form{display:grid;gap:14px}.verification-report-form>label{display:grid;gap:6px;color:#3e5149;font-size:.8rem;font-weight:650}.verification-report-form>label>span{color:#a4493b}.verification-report-form .field{min-height:43px;font-size:.85rem}.verification-report-form textarea{resize:vertical}.verification-report-form>.btn{width:100%;min-height:44px}.verification-report-status{min-height:1.2em;color:var(--green);font-size:.8rem}
 @media(max-width:850px){.verification-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.verification-report-section{grid-template-columns:1fr;gap:18px}}
 @media(max-width:520px){.verification-hero{padding:40px 0 35px}.verification-content{padding-top:18px}.verification-intro{padding:15px}.verification-section-heading{margin-top:28px}.verification-steps{grid-template-columns:1fr}.verification-step{min-height:0}.verification-report-section{margin-top:35px;padding-top:25px}.verification-report-card{padding:16px}}
+
+@media (max-width: 1000px) {
+  .home-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-hero-copy,
+  .home-hero .hero-panel {
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .specialty-grid,
+  .steps,
+  .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .footer-grid > div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .guide-article-layout {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 22px;
+  }
+
+  .admin-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-side {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 14px 20px;
+  }
+
+  .admin-nav {
+    display: flex;
+    gap: 5px;
+    margin-top: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .admin-nav a {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 800px) {
+  .home-process-inner,
+  .directory-layout,
+  .profile-layout,
+  .broker-profile-layout,
+  .verification-report-section,
+  .match-layout,
+  .legal-layout,
+  .guide-article-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .directory-layout {
+    gap: 20px;
+  }
+
+  .filters,
+  .contact-card,
+  .broker-profile-contact {
+    position: static;
+  }
+
+  .filters {
+    top: auto;
+  }
+
+  .advisor-grid,
+  .guide-grid,
+  .guide-related-grid,
+  .broker-match-grid,
+  .brokercheck-record-grid,
+  .verification-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .directory-results .advisor-grid,
+  .match-results .advisor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .directory-search-panel,
+  .brokercheck-search-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .directory-search-panel .btn,
+  .brokercheck-search-panel .directory-search-button {
+    grid-column: 1 / -1;
+  }
+
+  .legal-sidebar {
+    position: static;
+  }
+
+  .admin-top {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .admin-content {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding-right: 17px;
+    padding-left: 17px;
+  }
+
+  .home-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+
+  .specialty-grid,
+  .steps,
+  .advisor-grid,
+  .guide-grid,
+  .guide-related-grid,
+  .stat-grid,
+  .broker-match-grid,
+  .brokercheck-record-grid,
+  .verification-steps,
+  .directory-results .advisor-grid,
+  .match-results .advisor-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .guide-article-layout,
+  .directory-layout,
+  .profile-layout,
+  .broker-profile-layout,
+  .verification-report-section,
+  .match-layout,
+  .legal-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .directory-search-panel,
+  .brokercheck-search-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .directory-search-panel .btn,
+  .brokercheck-search-panel .directory-search-button {
+    grid-column: auto;
+  }
+
+  .results-bar,
+  .brokercheck-results-heading,
+  .match-results-heading,
+  .admin-title {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-side {
+    display: block;
+    padding-right: 17px;
+    padding-left: 17px;
+  }
+
+  .admin-side > .brand {
+    font-size: 1rem;
+  }
+
+  .admin-top {
+    height: auto;
+    min-height: 64px;
+    gap: 12px;
+    padding: 12px 17px;
+  }
+
+  .admin-top .btn {
+    min-height: 40px;
+    padding-right: 11px;
+    padding-left: 11px;
+    white-space: nowrap;
+  }
+
+  .admin-content {
+    padding: 20px 17px;
+  }
+
+  .admin-title h1 {
+    font-size: clamp(1.65rem, 7vw, 2.2rem);
+    overflow-wrap: anywhere;
+  }
+
+  .data-card {
+    overflow-x: auto;
+  }
+
+  .data-card table {
+    min-width: 620px;
+  }
+
+  .form-card {
+    padding: 18px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-legal-links a {
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero h1,
+  .page-hero h1 {
+    font-size: clamp(2rem, 10vw, 2.55rem);
+    overflow-wrap: anywhere;
+  }
+
+  .home-hero-actions {
+    align-items: stretch;
+  }
+
+  .home-primary-button {
+    width: 100%;
+  }
+
+  .home-text-link {
+    align-self: flex-start;
+  }
+
+  .home-section-heading,
+  .home-bottom-cta-inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .home-section-link {
+    white-space: normal;
+  }
+
+  .footer-grid {
+    gap: 20px;
+  }
+
+  .footer-grid > div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .footer-bottom {
+    font-size: 0.78rem;
+  }
+
+  .admin-top > strong {
+    min-width: 0;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 980px) {
+  .site-header {
+    position: sticky;
+  }
+
+  .mobile-navigation {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 51;
+    max-height: calc(100dvh - 72px);
+    overflow-y: auto;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 12px 24px rgba(11, 34, 57, 0.12);
+  }
+
+  .mobile-navigation > a:not(.btn) {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid > div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .brokercheck-pagination {
+    flex-wrap: wrap;
+  }
+
+  .brokercheck-page-numbers {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+}
