@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { z } from "zod";
 import {
   brokerCheckRecords,
@@ -71,22 +70,9 @@ export async function POST(request: Request) {
       { status: 503 },
     );
 
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const password = process.env.SMTP_PASSWORD;
-  const port = Number(process.env.SMTP_PORT || 465);
-  const secure =
-    process.env.SMTP_SECURE === undefined
-      ? port === 465
-      : process.env.SMTP_SECURE === "true";
-  if (
-    !host ||
-    !user ||
-    !password ||
-    !Number.isInteger(port) ||
-    port < 1 ||
-    port > 65535
-  )
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!apiKey || !from)
     return NextResponse.json(
       { error: "The email service is not configured. Please try again later." },
       { status: 503 },
@@ -106,29 +92,34 @@ export async function POST(request: Request) {
   ];
 
   try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth: { user, pass: password },
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 20000,
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [recipient],
+        reply_to: email,
+        subject,
+        text: lines.join("\n"),
+        html: `<p>${escapeHtml(lines.join("\n")).replace(/\n/g, "<br>")}</p>`,
+      }),
+      signal: AbortSignal.timeout(20000),
     });
-    await transporter.sendMail({
-      from: { name: "Findanadvisor", address: user },
-      to: recipient,
-      replyTo: email,
-      subject,
-      text: lines.join("\n"),
-      html: `<p>${escapeHtml(lines.join("\n")).replace(/\n/g, "<br>")}</p>`,
-    });
+
+    if (!response.ok) {
+      console.error(`Resend email delivery failed (HTTP ${response.status}).`);
+      return NextResponse.json(
+        { error: "We could not send your message. Please try again later." },
+        { status: 502 },
+      );
+    }
   } catch (error) {
-    const code =
-      typeof error === "object" && error !== null && "code" in error
-        ? String(error.code)
-        : "unknown";
-    console.error(`Broker contact SMTP delivery failed (${code}).`);
+    const errorName =
+      error instanceof Error ? error.name : "unknown";
+    console.error(`Resend email delivery failed (${errorName}).`);
     return NextResponse.json(
       { error: "We could not send your message. Please try again later." },
       { status: 502 },

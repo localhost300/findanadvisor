@@ -80,10 +80,8 @@ export default async function BrokerProfilePage({
   const isRegistered = record.registrations.length > 0;
   const contactReady = Boolean(
     recipient &&
-      process.env.SMTP_HOST &&
-      process.env.SMTP_USER &&
-      process.env.SMTP_PASSWORD &&
-      process.env.SMTP_PORT,
+      process.env.RESEND_API_KEY &&
+      process.env.RESEND_FROM_EMAIL,
   );
   const profileUrl = new URL(`/brokers/${record.crd}`, siteUrl).toString();
   const structuredData = {
