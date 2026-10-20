@@ -36,6 +36,13 @@ export default async function BrokerProfilePage({
 
   const { recipient } = getBrokerContactRecipient(record.crd);
   const isRegistered = record.registrations.length > 0;
+  const contactReady = Boolean(
+    recipient &&
+      process.env.SMTP_HOST &&
+      process.env.SMTP_USER &&
+      process.env.SMTP_PASSWORD &&
+      process.env.SMTP_PORT,
+  );
 
   return (
     <SiteShell>
@@ -133,7 +140,7 @@ export default async function BrokerProfilePage({
             <BrokerContactForm
               crd={record.crd}
               brokerName={record.name}
-              enabled={Boolean(recipient)}
+              enabled={contactReady}
             />
           </aside>
         </div>

@@ -2,7 +2,7 @@
 
 Findanadvisor is a Next.js App Router and TypeScript site for browsing public
 financial-professional records, with Supabase integration for application
-features and Resend for optional broker contact email delivery.
+features and SMTP email delivery for broker contact forms.
 
 The public `/advisors` directory and `/brokers/[crd]` profiles use the sourced
 records in `lib/brokercheck-data.ts`. The advisor match questionnaire filters
@@ -15,7 +15,7 @@ the source summaries.
 - Node.js 20 or newer
 - npm
 - A Supabase project for database-backed features
-- A Resend account and verified sender domain to enable broker contact forms
+- An SMTP mailbox to enable broker contact forms
 
 ## Local setup
 
@@ -60,12 +60,17 @@ profiles. The public BrokerCheck list is maintained in
 ## Broker contact email
 
 The broker contact form is disabled until a broker has a unique recipient
-address configured. To enable delivery, set:
+address and SMTP credentials are configured. The example recipient mapping
+routes Tina Renee Graves (CRD 5889228) to `info@findanadvisor.icu`. To enable
+SMTP delivery, set:
 
 ```env
-RESEND_API_KEY=YOUR_RESEND_API_KEY
-CONTACT_FROM_EMAIL=Findanadvisor <contact@your-verified-domain.example>
-BROKERCHECK_CONTACT_EMAILS={"6117896":"broker@example.com"}
+SMTP_HOST=mail.findanadvisor.icu
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=info@findanadvisor.icu
+SMTP_PASSWORD=YOUR_ROTATED_MAILBOX_PASSWORD
+BROKERCHECK_CONTACT_EMAILS={"5889228":"info@findanadvisor.icu"}
 ```
 
 `BROKERCHECK_CONTACT_EMAILS` maps CRD numbers to recipient addresses. Every
@@ -73,7 +78,8 @@ address must be valid, every CRD must exist in the directory, and no email
 address may be assigned to more than one broker. Messages are sent only to the
 address mapped to the submitted broker's CRD. Keep these values private and
 configure them in the deployment provider's environment settings as well as
-locally.
+locally. Do not put a real mailbox password in source control or send it in
+chat. If a password has been shared, rotate it before configuring SMTP.
 
 ## Admin setup
 
@@ -103,8 +109,8 @@ npm run build
 Import the repository into your hosting provider and configure the required
 environment variables there. Set `NEXT_PUBLIC_SITE_URL` to the production HTTPS
 origin. Add the production origin and authentication callbacks to the Supabase
-redirect allowlist. Configure Resend sender-domain verification before
-enabling broker contact forms.
+redirect allowlist. Configure the SMTP environment variables in the hosting
+provider before enabling broker contact forms.
 
 ## Data and source notes
 
